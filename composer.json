@@ -1,0 +1,34 @@
+{
+    "name": "chbiel/php-jenkins-ci",
+    "description": "PHP library to control Jenkins CI via API (JSON/XML)",
+    "keywords": [
+        "jenkins",
+        "automation",
+        "api"
+    ],
+    "homepage": "https://github.com/chbiel/php-jenkins-ci",
+    "minimum-stability": "dev",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Christopher Biel",
+            "email": "christopher.biel89@gmail.com",
+            "homepage": "http://christopherbiel.com/",
+            "role": "Lead"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.0",
+        "phpunit/phpunit": ">=3.7.8",
+        "ext-simplexml": "*"
+    },
+    "autoload": {
+        "psr-0": {
+            "": [
+                "test/unit",
+                "test/functional"
+            ],
+            "ParaTest": ["src/"]
+        }
+    }
+}
