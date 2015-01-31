@@ -1,6 +1,10 @@
 <?php
 namespace JenkinsCI\Object;
 
-class View {
+/**
+ * A View represents a view tab in Jenkins
+ */
+class View
+{
 
 }

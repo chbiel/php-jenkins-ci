@@ -6,7 +6,7 @@ class AbstractObject
     /**
      * @var Jenkins
      */
-    protected $_jenkins;
+    protected $_jenkins = null;
 
     /**
      * @var \stdClass
@@ -19,7 +19,6 @@ class AbstractObject
     public function refresh()
     {
         $this->_data = $this->$this->_jenkins->get($this->getUrl());
-
         return $this;
     }
 
@@ -29,21 +28,26 @@ class AbstractObject
     abstract protected function getUrl();
 
     /**
+     * Calls refresh when data is empty
+     *
      * @param string $propertyName
      *
-     * @return string|int|null
+     * @return string|int|null|\stdClass
+     * @throws \RuntimeException
      */
     public function get($propertyName)
     {
+        if (!$this->_data) $this->refresh();
+
         if ($this->_data instanceof \stdClass && isset($this->_data->$propertyName)) {
             return $this->_data->$propertyName;
         }
 
-        return null;
+        throw new \RuntimeException(sprintf('You tried to get a property (%s) that is not available', $propertyName));
     }
 
     /**
-     * @return Jenkins
+     * @return Jenkins|null
      */
     public function getJenkins()
     {
@@ -53,7 +57,7 @@ class AbstractObject
     /**
      * @param Jenkins $jenkins
      */
-    public function setJenkins($jenkins)
+    public function setJenkins(Jenkins $jenkins)
     {
         $this->_jenkins = $jenkins;
     }

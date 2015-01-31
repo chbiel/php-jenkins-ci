@@ -1,9 +1,11 @@
 <?php
 namespace JenkinsCI\Object;
 
-
 use JenkinsCI\Jenkins;
 
+/**
+ * The Instance represents the Jenkins instance
+ */
 class Instance
 {
     private $_baseUrl;
