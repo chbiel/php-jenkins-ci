@@ -59,6 +59,60 @@ class Job extends AbstractObject
     }
 
     /**
+     * @param array $params
+     * @return bool
+     */
+    public function buildAndWait($params = [])
+    {
+        $nextBuildNumber = $this->get('nextBuildNumber');
+
+        $this->build($params);
+
+        while ($this->refresh()->getLastBuild()->getBuildNumber() !== $nextBuildNumber) {
+            sleep(1);
+        }
+        $runningBuild = $this->getLastBuild();
+        $runningBuildNumber = $runningBuild->getBuildNumber();
+
+        while (($runningBuild->isRunning() || $runningBuild->isPending()) && $runningBuild->getBuildNumber() === $runningBuildNumber) {
+            sleep(1);
+            $runningBuild->refresh();
+        }
+
+        return true;
+    }
+
+    /**
+     * @return Build|null
+     */
+    public function getLastSuccessfulBuild()
+    {
+        if (null === ($lastSuccessfulBuild = $this->get('lastSuccessfulBuild'))) {
+            return null;
+        }
+        return $this->getBuild($lastSuccessfulBuild->number);
+    }
+
+    /**
+     * @return Build|null
+     */
+    public function getLastBuild()
+    {
+        if (null === ($lastBuild = $this->get('lastBuild'))) {
+            return null;
+        }
+        return $this->getBuild($lastBuild->number);
+    }
+
+    /**
+     * @return bool
+     */
+    public function isCurrentlyBuilding()
+    {
+        return $this->getLastBuild()->isRunning();
+    }
+
+    /**
      * @param bool $asString
      * @return string|\SimpleXMLElement
      */

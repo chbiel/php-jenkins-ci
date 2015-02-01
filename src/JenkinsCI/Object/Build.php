@@ -80,6 +80,11 @@ class Build extends AbstractObject
     public function isRunning() { return Build::RUNNING === $this->getResult(); }
 
     /**
+     * @return bool
+     */
+    public function isPending() { return Build::WAITING === $this->getResult(); }
+
+    /**
      * @return float|null
      */
     public function getEstimatedDuration()
